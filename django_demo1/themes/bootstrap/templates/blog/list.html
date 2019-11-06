@@ -1,0 +1,59 @@
+{% extends './base.html' %}
+
+{% block title %}
+
+{% if tag %}
+标签页：{{ tag.name }}
+{% endif %}
+
+{% if category %}
+分类页：{{ category.name }}
+{% endif %}
+
+{% endblock %}
+
+{% block main %}
+    {% for post in post_list %}
+    <div class="card post">
+        <div class="card-body">
+            <p><h5 class="card-title">
+                <a href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
+            </h5>
+            <p>
+            <span class="card-link">作者：<a href="{% url 'author' post.owner.id %}">{{ post.owner.username }}</a> </span>
+            <span class="card-link">分类：<a href="{% url 'category-list' post.category.id %}">{{ post.category.name }}</a></span>
+            <span class="card-link">标签：<a href="{% url 'tag-list' post.tag.id %}">{{ post.tag.name }}</a></span>
+            </p>
+            <p class="card-text">{{ post.desc }}<a href="{% url 'post-detail' post.id %}"></a></p>
+        </div>
+    </div>
+    {% endfor %}
+
+    <ul class="pagination justify-content-center">
+    {% if page_obj %}
+        {% if page_obj.has_previous %}
+            <li class="page-item "><a class="page-link" href="?page={{ page_obj.previous_page_number }}">上一页</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link">上一页</a></li>
+        {% endif %}
+
+        {% for page_number in page_obj.paginator.page_range %}
+            {% if page_number == page_obj.number %}
+                <li class="page-item active"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a> </li>
+{#              {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a> </li>
+            {% endif %}
+
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">下一页</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link">下一页</a></li>
+        {% endif %}
+    {% endif %}
+    </ul>
+
+
+{% endblock %}

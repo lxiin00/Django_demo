@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django_demo1</title>
+</head>
+<body>
+<ul>
+    {% for comment in comments %}
+{#    <li><a href="/post/{{ comment.target_id }}.html">{{ comment.target.title }}</a> | {{ comment.nickname }} : {{ comment.content }}</li>#}
+    <li><a href="{% url 'post-detail' comment.target_id %}">{{ comment.target.title }}</a> | {{ comment.nickname }} : {% autoescape off %} }{{ comment.content }}{% endautoescape %} }</li>
+    {% endfor %}
+</ul>
+</body>
+</html>
