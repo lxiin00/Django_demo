@@ -14,8 +14,10 @@ from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
 
 from django.conf import settings
-from django.conf.urls import url, include
-from django.conf.urls.static import static
+from django.conf.urls import url, include, re_path
+from django.conf.urls.static import static as static1
+from .settings import base
+from django.views import static
 
 # from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
@@ -45,15 +47,21 @@ urlpatterns = [
     url(r'^super_admin/', admin.site.urls, name='super-admin'),
     # url(r'^admin/', custom_site.urls, name='admin'),
     url(r'^admin/', xadmin.site.urls, name='xadmin'),
+    # path(r'admin/', xadmin.site.urls, name='xadmin'),
     # url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(), name='category-autocomplete'),
     # url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete'),
     # url(r'^api/post/', PostList.as_view(), name='post-list'),
     url(r'^api/', include(router.urls)),
     url(r'^api/docs/', include_docs_urls(title='django_demo1 apis')),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # re_path(r'^static/(?P<path>.*)', static.serve, {'document_root': base.STATIC_ROOT}),
+    url(r'^media/(?P<path>.*)$', static.serve, {'document_root': base.MEDIA_ROOT}, name='media'),
 
-if settings.DEBUG:
-    urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
+]
+
+# urlpatterns += static1(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
+
+# if settings.DEBUG:
+#     urlpatterns = [
+#         url(r'^__debug__/', include(debug_toolbar.urls)),
+#     ] + urlpatterns

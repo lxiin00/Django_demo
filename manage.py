@@ -6,7 +6,7 @@ import sys
 
 def main():
     # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_demo1.settings')
-    profile = os.environ.get('DJANGO_DEMO1_PROFILE', 'develop')
+    profile = os.environ.get('DJANGO_DEMO1_PROFILE', 'product')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_demo1.settings.%s' % profile)
     try:
         from django.core.management import execute_from_command_line
